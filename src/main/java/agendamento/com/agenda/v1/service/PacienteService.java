@@ -1,6 +1,7 @@
 package agendamento.com.agenda.v1.service;
 
 import agendamento.com.agenda.v1.domain.Paciente;
+import agendamento.com.agenda.v1.exception.businessExcepetion;
 import agendamento.com.agenda.v1.repository.PacienteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,15 +15,23 @@ public class PacienteService {
     @Autowired
     private PacienteRepository repository;
 
+    public Paciente salvar(Paciente paciente) {
 
+        Boolean existeCPF = false;
+        Optional<Paciente> base = repository.findByCpf(paciente.getCpf());
 
-    public Object salvar(Paciente paciente) {
-
-        if (repository.buscarCPF(paciente.getCpf())){
-            return new RuntimeException("CPF JÁ EXISTE");
+        if (base.isPresent()){
+            if (!base.get().getId().equals(paciente.getId())){
+                existeCPF = true;
+            }
         }
 
-        return repository.save(paciente)
+        if (existeCPF){
+            throw new businessExcepetion("Paciente já cadastrado!");
+        }
+
+
+        return repository.save(paciente);
     }
 
     public List<Paciente> listarTodods(){
@@ -37,7 +46,4 @@ public class PacienteService {
         repository.deleteById(id);
     }
 
-    public String buscarPornome(Paciente paciente){
-        return repository.BuscarPorNome(paciente.getNome());
-    }
 }
