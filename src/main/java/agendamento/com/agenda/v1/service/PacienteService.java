@@ -51,8 +51,8 @@ public class PacienteService {
         return repository.findAll();
     }
 
-    public Optional<Paciente> buscarPorID(Long id) {
-        return repository.findById(id);
+    public Optional<Paciente> buscarPorCPF(String cpf) {
+        return repository.findByCpf(cpf);
     }
 
     public void deletar(Long id){
