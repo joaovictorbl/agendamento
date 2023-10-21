@@ -1,6 +1,9 @@
 package agendamento.com.agenda.v1.controllers;
 
 import agendamento.com.agenda.v1.domain.Paciente;
+import agendamento.com.agenda.v1.dto.request.PacienteRequest;
+import agendamento.com.agenda.v1.dto.response.PacienteResponse;
+import agendamento.com.agenda.v1.mapper.PacienteMapper;
 import agendamento.com.agenda.v1.service.PacienteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -18,11 +21,15 @@ public class PacienteController {
     private PacienteService service;
 
     @PostMapping
-    public ResponseEntity<Paciente> salvarPaciente(@RequestBody Paciente paciente){
+    public ResponseEntity<PacienteResponse> salvarPaciente(@RequestBody PacienteRequest request){
+
+        Paciente paciente = PacienteMapper.toPaciente(request);
 
         Paciente pacienteNovo = service.salvar(paciente);
 
-        return ResponseEntity.status(HttpStatus.CREATED).body(pacienteNovo);
+        PacienteResponse response = PacienteMapper.toPacienteResponse(pacienteNovo);
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
     @GetMapping
@@ -32,20 +39,25 @@ public class PacienteController {
     }
 
     @GetMapping("/{cpf}")
-    public ResponseEntity<Optional<Paciente>> buscarPorCPF(@PathVariable String cpf) {
-        Optional<Paciente> buscarPaciente = service.buscarPorCPF(cpf);
+    public ResponseEntity<Optional<PacienteResponse>> buscarPorCPF(@PathVariable String cpf) {
 
-        if (buscarPaciente.isEmpty()){
-            return ResponseEntity.notFound().build();
-        }
-
-        return ResponseEntity.status(HttpStatus.OK).body(buscarPaciente);
+      Optional<Paciente> optionalPaciente = service.buscarPorCPF(cpf);
+      if (optionalPaciente.isPresent()) {
+          Paciente paciente = optionalPaciente.get();
+          PacienteResponse response = PacienteMapper.toPacienteResponse(paciente);
+          return ResponseEntity.ok().body(Optional.of(response));
+      }else {
+          return ResponseEntity.notFound().build();
+      }
     }
 
     @PatchMapping
-    public ResponseEntity<Paciente> atualizarPacinete(@RequestBody Paciente paciente) {
-        Paciente pacienteAtualizado = service.salvar(paciente);
-        return ResponseEntity.ok().body(pacienteAtualizado);
+    public ResponseEntity<PacienteResponse> atualizarPacinete(@RequestBody PacienteRequest request) {
+
+        Paciente paciente = PacienteMapper.toPaciente(request);
+        Paciente pacienteNovo = service.salvar(paciente);
+        PacienteResponse response = PacienteMapper.toPacienteResponse(pacienteNovo);
+        return ResponseEntity.ok().body(response);
 
     }
 
