@@ -4,9 +4,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
-public class businessExcepetion extends RuntimeException{
+public class JaCadastradoExcepetion extends RuntimeException{
 
-    public businessExcepetion(String msg){
+    public JaCadastradoExcepetion(String msg){
         super(msg);
     }
 }

@@ -3,6 +3,8 @@ package agendamento.com.agenda.v1.controllers;
 import agendamento.com.agenda.v1.domain.Paciente;
 import agendamento.com.agenda.v1.dto.request.PacienteRequest;
 import agendamento.com.agenda.v1.dto.response.PacienteResponse;
+import agendamento.com.agenda.v1.exception.JaCadastradoExcepetion;
+import agendamento.com.agenda.v1.exception.NaoCadastradoExcepetion;
 import agendamento.com.agenda.v1.mapper.PacienteMapper;
 import agendamento.com.agenda.v1.service.PacienteService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,7 +51,7 @@ public class PacienteController {
           PacienteResponse response = PacienteMapper.toPacienteResponse(paciente);
           return ResponseEntity.ok().body(Optional.of(response));
       }else {
-          return ResponseEntity.notFound().build();
+          throw new NaoCadastradoExcepetion("Paciente não cadastrado:");
       }
     }
 

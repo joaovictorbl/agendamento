@@ -1,9 +1,7 @@
 package agendamento.com.agenda.v1.service;
 
 import agendamento.com.agenda.v1.domain.Paciente;
-import agendamento.com.agenda.v1.dto.request.PacienteRequest;
-import agendamento.com.agenda.v1.dto.response.PacienteResponse;
-import agendamento.com.agenda.v1.exception.businessExcepetion;
+import agendamento.com.agenda.v1.exception.JaCadastradoExcepetion;
 import agendamento.com.agenda.v1.repository.PacienteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -43,7 +41,7 @@ public class PacienteService {
         }
 
         if (variavelDeControle){
-            throw new businessExcepetion("Paciente já cadastrado!");
+            throw new JaCadastradoExcepetion("Paciente já cadastrado.");
         }
 
         return repository.save(paciente);

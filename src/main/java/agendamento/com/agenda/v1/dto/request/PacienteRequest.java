@@ -1,10 +1,16 @@
 package agendamento.com.agenda.v1.dto.request;
 
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+
 public class PacienteRequest {
 
+    @NotBlank(message = "Nome obrigatorio.")
     private String nome;
 
+    @NotBlank(message = "CPF obrigatorio.")
     private String cpf;
+    @Email(message = "Email invalido.")
     private String email;
 
     public PacienteRequest() {
