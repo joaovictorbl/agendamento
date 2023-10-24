@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -33,9 +34,10 @@ public class PacienteController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Paciente>> listarTodos () {
+    public ResponseEntity<List<PacienteResponse>> listarTodos () {
         List<Paciente> listarTodos = service.listarTodods();
-        return ResponseEntity.status(HttpStatus.OK).body(listarTodos);
+        List<PacienteResponse> listaResponse = PacienteMapper.toPacienteResponseList(listarTodos);
+        return ResponseEntity.status(HttpStatus.OK).body(listaResponse);
     }
 
     @GetMapping("/{cpf}")
